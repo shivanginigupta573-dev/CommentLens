@@ -3,6 +3,7 @@
 import os
 from dotenv import load_dotenv
 from cleaner import clean_comments
+from embedder import get_embeddings
 from googleapiclient.discovery import build
 
 load_dotenv()
@@ -45,6 +46,8 @@ def get_comments(video_id,max_comments=70):
 if __name__ == "__main__":
     comments = get_comments(VIDEO_ID, max_comments=50)
     cleaned = clean_comments(comments)
+    embeddings = get_embeddings(cleaned)
+    print(f"Embeddings shape: {len(embeddings)} x {len(embeddings[0])}")
     print(f"\n--- {len(comments)} fetched → {len(cleaned)} after cleaning ---\n")
     for i, c in enumerate(cleaned, 1):
         print(f"{i}. [{c['likes']} likes] {c['text'][:100]}\n")
