@@ -4,7 +4,7 @@ import os
 from dotenv import load_dotenv
 from cleaner import clean_comments
 from embedder import get_embeddings
-from clusterer import cluster_comments
+from clusterer import cluster_comments, label_clusters
 from googleapiclient.discovery import build
 
 load_dotenv()
@@ -48,12 +48,12 @@ if __name__ == "__main__":
     comments = get_comments(VIDEO_ID, max_comments=50)
     cleaned = clean_comments(comments)
     embeddings = get_embeddings(cleaned)
-
     clusters = cluster_comments(embeddings, cleaned)
+    labelled = label_clusters(clusters, len(cleaned))
 
-    print(f"\n--- {len(clusters)} topic clusters found ---\n")
-    for i, cluster in enumerate(clusters, 1):
-        print(f"Cluster {i} ({len(cluster)} comments):")
-        for c in cluster[:3]:  # show top 3 per cluster
-            print(f"  → {c['text'][:80]}")
+    print(f"\n--- {len(labelled)} clusters found ---\n")
+    for c in labelled:
+        print(f"Cluster {c['cluster_id']} — {c['percentage']}% of comments | avg {c['avg_likes']} likes")
+        for comment in c['top_comments']:
+            print(f"  → {comment[:80]}")
         print()

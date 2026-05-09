@@ -20,5 +20,19 @@ def cluster_comments(embeddings,cleaned_comments):
     sorted_clusters=sorted(clusters.values(),key=len,reverse=True)
     return sorted_clusters
 
+def label_clusters(clusters, total_comments):
+    labelled = []
+    for i, cluster in enumerate(clusters, 1):
+        avg_likes = sum(c["likes"] for c in cluster) / len(cluster)
+        percentage = round(len(cluster) / total_comments * 100, 1)
+        labelled.append({
+            "cluster_id": i,
+            "size": len(cluster),
+            "percentage": percentage,
+            "avg_likes": round(avg_likes, 1),
+            "top_comments": [c["text"] for c in cluster[:3]],
+        })
+    return labelled
+
 if __name__=="__main__":
     print("Run from main.py")
