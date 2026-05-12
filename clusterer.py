@@ -18,7 +18,7 @@ def cluster_comments(embeddings,cleaned_comments):
         clusters[label].append(cleaned_comments[i])
 
     sorted_clusters=sorted(clusters.values(),key=len,reverse=True)
-    return sorted_clusters[:5]
+    return sorted_clusters[]
 
 def label_clusters(clusters, total_comments):
     labelled = []
