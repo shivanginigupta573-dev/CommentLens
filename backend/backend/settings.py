@@ -123,5 +123,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
-CORS_ALLOW_ALL_ORIGINS = True  #allows react to talk to django later
+CORS_ALLOW_ALL_ORIGINS = https://comment-lens-wudc.vercel.app/ #allows react to talk to django later
 STATIC_ROOT = BASE_DIR / "staticfiles"
