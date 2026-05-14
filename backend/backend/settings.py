@@ -29,7 +29,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = os.getenv("DEBUG") == "True"
 
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["commentlens-2uqw.onrender.com"]
 
 
 # Application definition
@@ -123,5 +123,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
-CORS_ALLOW_ALL_ORIGINS = https://comment-lens-alpha.vercel.app/#allows react to talk to django later
+CORS_ALLOWED_ORIGINS = [
+    "https://comment-lens-alpha.vercel.app",
+]
 STATIC_ROOT = BASE_DIR / "staticfiles"
