@@ -45,9 +45,7 @@ INSTALLED_APPS = [
     'api',  
     'corsheaders',
 ]
-
 MIDDLEWARE = [
-    MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
