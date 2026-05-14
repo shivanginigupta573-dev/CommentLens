@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import axios from 'axios'
 import './App.css'
+const API_URL = import.meta.env.VITE_API_URL;
 
 const LOADING_STEPS = [
   'Reading audience conversations...',
@@ -77,7 +78,7 @@ export default function App() {
     }, 9000)
 
     try {
-      const response = await axios.post('http://127.0.0.1:8000/api/analyze/', { url })
+      const response = await axios.post(`${API_URL}/api/analyze/`, { url });
       setLoadingProgress(100)
       setTimeout(() => {
         setResults(response.data)
