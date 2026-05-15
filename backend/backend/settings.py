@@ -128,8 +128,12 @@ if DEBUG:
     CORS_ALLOW_ALL_ORIGINS = True
 else:
     CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
     "https://comment-lens-alpha.vercel.app",
+    "https://commentlens-gvadxr3h-shivanginigupta573-1487s-projects.vercel.app",
+]
+    CSRF_TRUSTED_ORIGINS = [
+    "https://comment-lens-alpha.vercel.app",
+    "https://commentlens-gvadxr3h-shivanginigupta573-1487s-projects.vercel.app",
 ]
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_METHODS = [
