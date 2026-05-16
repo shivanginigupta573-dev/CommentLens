@@ -130,10 +130,13 @@ else:
     CORS_ALLOWED_ORIGINS = [
     "https://comment-lens-alpha.vercel.app",
     "https://commentlens-gvadxr3h-shivanginigupta573-1487s-projects.vercel.app",
+    "http://localhost:5173",
+    
 ]
     CSRF_TRUSTED_ORIGINS = [
     "https://comment-lens-alpha.vercel.app",
     "https://commentlens-gvadxr3h-shivanginigupta573-1487s-projects.vercel.app",
+    "http://localhost:5173",
 ]
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_METHODS = [
