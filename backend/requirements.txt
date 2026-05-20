@@ -15,7 +15,7 @@ googleapis-common-protos==1.62.0
 httplib2==0.22.0
 uritemplate==4.1.1
 
-sentence-transformers==2.2.2
+sentence-transformers==2.7.0
 transformers==4.36.2
 
 # CPU-only PyTorch — drastically smaller (~200MB vs ~2GB)
