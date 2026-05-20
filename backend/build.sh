@@ -11,3 +11,7 @@ python manage.py collectstatic --noinput
 
 # Run database migrations
 python manage.py migrate --noinput
+
+# Pre-download models and pre-compile Numba/UMAP so startup is instant
+python warmup.py
+
