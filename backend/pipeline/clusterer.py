@@ -1,8 +1,9 @@
-import numpy as np
-import umap
-import hdbscan
+def cluster_comments(embeddings, cleaned_comments):
+    # Lazy imports: only load heavy ML libraries when actually needed
+    import numpy as np
+    import umap
+    import hdbscan
 
-def cluster_comments(embeddings,cleaned_comments):
     reducer=umap.UMAP(n_components=5,random_state=42,min_dist=0.0,metric="cosine")
     reduced=reducer.fit_transform(embeddings)
 

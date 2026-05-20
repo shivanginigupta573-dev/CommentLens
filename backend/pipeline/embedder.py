@@ -1,10 +1,10 @@
-from sentence_transformers import SentenceTransformer
-
 model = None
 
 def get_model():
     global model
     if model is None:
+        # Lazy import: only load torch/sentence_transformers when actually needed
+        from sentence_transformers import SentenceTransformer
         model = SentenceTransformer('paraphrase-MiniLM-L3-v2')
     return model
 
