@@ -2,10 +2,10 @@ import os
 import requests
 
 def get_embeddings(cleaned_comments):
-    # Reuse the existing YouTube API key for Google's Text Embedding API
-    api_key = os.getenv("YOUTUBE_API_KEY")
+    # Prioritize dedicated GEMINI_API_KEY, fallback to YOUTUBE_API_KEY
+    api_key = os.getenv("GEMINI_API_KEY") or os.getenv("YOUTUBE_API_KEY")
     if not api_key:
-        raise ValueError("YOUTUBE_API_KEY environment variable is missing.")
+        raise ValueError("Neither GEMINI_API_KEY nor YOUTUBE_API_KEY environment variables are set.")
 
     texts = [c["text"] for c in cleaned_comments]
     
