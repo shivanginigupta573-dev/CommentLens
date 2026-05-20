@@ -1,16 +1,10 @@
-from django.shortcuts import render
-import sys
-import os
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-# tell Django where your pipeline files are
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..'))
-
-from main import get_comments
-from cleaner import clean_comments
-from embedder import get_embeddings
-from clusterer import cluster_comments, label_clusters
+from pipeline.main import get_comments
+from pipeline.cleaner import clean_comments
+from pipeline.embedder import get_embeddings
+from pipeline.clusterer import cluster_comments, label_clusters
 
 
 @api_view(['POST'])
