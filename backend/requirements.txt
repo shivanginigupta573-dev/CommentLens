@@ -15,14 +15,7 @@ googleapis-common-protos==1.62.0
 httplib2==0.22.0
 uritemplate==4.1.1
 
-sentence-transformers==2.7.0
-transformers==4.36.2
-
-# CPU-only PyTorch — drastically smaller (~200MB vs ~2GB)
-# Render has no GPU, so CUDA libraries are wasted space/RAM
---extra-index-url https://download.pytorch.org/whl/cpu
-torch==2.1.0+cpu
-
+# Local clustering libraries
 hdbscan==0.8.33
 umap-learn==0.5.3
 
