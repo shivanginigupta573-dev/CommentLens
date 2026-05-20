@@ -26,7 +26,7 @@ def analyze(request):
 
     try:
         # step 2: run your pipeline
-        raw_comments = get_comments(url, max_comments=100)
+        raw_comments = get_comments(url, max_comments=50)
 
         if len(raw_comments) < 10:
             return Response(
