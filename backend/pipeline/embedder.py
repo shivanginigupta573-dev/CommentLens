@@ -2,26 +2,46 @@ import os
 import requests
 
 def get_embeddings(cleaned_comments):
+    # Reuse the existing YouTube API key for Google's Text Embedding API
+    api_key = os.getenv("YOUTUBE_API_KEY")
+    if not api_key:
+        raise ValueError("YOUTUBE_API_KEY environment variable is missing.")
+
     texts = [c["text"] for c in cleaned_comments]
     
-    # Use the industry-standard all-MiniLM-L6-v2 model (extremely fast and accurate)
-    API_URL = "https://api-inference.huggingface.co/models/sentence-transformers/all-MiniLM-L6-v2"
+    # Google's Batch Embeddings endpoint using the state-of-the-art text-embedding-004 model
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/text-embedding-004:batchEmbedContents?key={api_key}"
     
-    # Retrieve HF Token from environment variables
-    hf_token = os.getenv("HF_TOKEN")
-    headers = {}
-    if hf_token:
-        headers["Authorization"] = f"Bearer {hf_token}"
+    requests_payload = []
+    for text in texts:
+        requests_payload.append({
+            "model": "models/text-embedding-004",
+            "content": {
+                "parts": [{"text": text}]
+            }
+        })
         
     payload = {
-        "inputs": texts,
-        "options": {"wait_for_model": True}
+        "requests": requests_payload
     }
     
-    response = requests.post(API_URL, headers=headers, json=payload)
+    headers = {"Content-Type": "application/json"}
     
+    response = requests.post(url, headers=headers, json=payload)
+    
+    # Fallback to older embedding model if text-embedding-004 isn't enabled on the key
     if response.status_code != 200:
-        raise ValueError(f"Hugging Face API failed: {response.text}")
+        fallback_url = f"https://generativelanguage.googleapis.com/v1beta/models/embedding-001:batchEmbedContents?key={api_key}"
+        for req in requests_payload:
+            req["model"] = "models/embedding-001"
+            
+        response = requests.post(fallback_url, headers=headers, json=payload)
         
-    embeddings = response.json()
+        if response.status_code != 200:
+            raise ValueError(f"Google Embedding API failed: {response.text}")
+            
+    data = response.json()
+    
+    # Extract vector values (768 dimensions)
+    embeddings = [item["values"] for item in data["embeddings"]]
     return embeddings
