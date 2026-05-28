@@ -1,14 +1,20 @@
-from sentence_transformers import SentenceTransformer
+import os
+import numpy as np
+import google.generativeai as genai
 
-model = None
-
-def get_model():
-    global model
-    if model is None:
-        model = SentenceTransformer('paraphrase-MiniLM-L3-v2')
-    return model
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
 
 def get_embeddings(cleaned_comments):
+    genai.configure(api_key=GEMINI_API_KEY)
     texts = [c["text"] for c in cleaned_comments]
-    embeddings = get_model().encode(texts)
-    return embeddings
+    
+    embeddings = []
+    for text in texts:
+        result = genai.embed_content(
+            model="models/text-embedding-004",
+            content=text,
+            task_type="clustering"
+        )
+        embeddings.append(result['embedding'])
+    
+    return np.array(embeddings)
