@@ -287,9 +287,11 @@ export default function App() {
                     <div className="cluster-main">
                       <div className="cluster-title-row">
                         <h4 className="cluster-title">
-                          {cluster.top_comments[0]
-                            ?.split(' ').slice(0, 8).join(' ')
-                            .replace(/[^a-zA-Z0-9\s]/g, '').trim() + '...'}
+                          {cluster.top_comments && cluster.top_comments[0]
+                            ? cluster.top_comments[0]
+                                .split(' ').slice(0, 8).join(' ')
+                                .replace(/[^a-zA-Z0-9\s]/g, '').trim() + '...'
+                            : `Topic Signal #${idx + 1}`}
                         </h4>
                         <span
                           className="percent-badge"
