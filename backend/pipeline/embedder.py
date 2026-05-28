@@ -1,6 +1,7 @@
 import os
 import numpy as np
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
 
