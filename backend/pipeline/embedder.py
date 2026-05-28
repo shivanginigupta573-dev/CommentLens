@@ -1,25 +1,20 @@
-import requests
-import numpy as np
 import os
+import numpy as np
+import google.generativeai as genai
 
-HF_TOKEN = os.getenv("HF_TOKEN", "")
-API_URL = "https://api-inference.huggingface.co/models/sentence-transformers/all-MiniLM-L6-v2"
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
 
 def get_embeddings(cleaned_comments):
+    genai.configure(api_key=GEMINI_API_KEY)
     texts = [c["text"] for c in cleaned_comments]
     
-    headers = {}
-    if HF_TOKEN:
-        headers["Authorization"] = f"Bearer {HF_TOKEN}"
+    embeddings = []
+    for text in texts:
+        result = genai.embed_content(
+            model="models/text-embedding-004",
+            content=text,
+            task_type="clustering"
+        )
+        embeddings.append(result['embedding'])
     
-    response = requests.post(
-        API_URL,
-        headers=headers,
-        json={"inputs": texts, "options": {"wait_for_model": True}}
-    )
-    
-    if response.status_code != 200:
-        raise Exception(f"HF API error: {response.text}")
-    
-    embeddings = np.array(response.json())
-    return embeddings
+    return np.array(embeddings)
