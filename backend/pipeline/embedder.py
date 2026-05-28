@@ -11,7 +11,7 @@ def get_embeddings(cleaned_comments):
     embeddings = []
     for text in texts:
         result = genai.embed_content(
-            model="models/text-embedding-004",
+            model="models/text-embedding-001",
             content=text,
             task_type="clustering"
         )
