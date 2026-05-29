@@ -3,19 +3,15 @@ import numpy as np
 from google import genai
 from google.genai import types
 
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
-
 def get_embeddings(cleaned_comments):
-    genai.configure(api_key=GEMINI_API_KEY)
+    client = genai.Client(api_key=os.getenv("GEMINI_API_KEY", ""))
     texts = [c["text"] for c in cleaned_comments]
-    
-    embeddings = []
-    for text in texts:
-        result = genai.embed_content(
-            model="models/text-embedding-001",
-            content=text,
-            task_type="clustering"
-        )
-        embeddings.append(result['embedding'])
-    
-    return np.array(embeddings)
+
+    result = client.models.embed_content(
+        model="gemini-embedding-001",
+        contents=texts,
+        config=types.EmbedContentConfig(task_type="CLUSTERING")
+    )
+
+    embeddings = np.array([e.values for e in result.embeddings])
+    return embeddings
