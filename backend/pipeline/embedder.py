@@ -1,24 +1,25 @@
-from sklearn.feature_extraction.text import TfidfVectorizer
-
+import os
+import numpy as np
+import requests
 
 def get_embeddings(cleaned_comments):
-    """
-    Generate TF-IDF vector embeddings from cleaned comment texts.
-    
-    This runs 100% locally with zero external API calls.
-    No Hugging Face, no Google Gemini, no network dependencies.
-    scikit-learn's TF-IDF is lightweight, fast, and perfectly
-    suited for topic clustering of YouTube comments.
-    """
     texts = [c["text"] for c in cleaned_comments]
-
-    vectorizer = TfidfVectorizer(
-        max_features=512,       # Cap dimensions for UMAP compatibility
-        stop_words="english",   # Remove common words like "the", "is", etc.
-        ngram_range=(1, 2),     # Capture single words AND two-word phrases
-        min_df=2,               # Ignore extremely rare terms
-        max_df=0.95,            # Ignore terms that appear in 95%+ of comments
+    
+    response = requests.post(
+        "https://api.openai.com/v1/embeddings",
+        headers={
+            "Authorization": f"Bearer {os.getenv('OPENAI_API_KEY', '')}",
+            "Content-Type": "application/json"
+        },
+        json={
+            "model": "text-embedding-3-small",
+            "input": texts
+        }
     )
-
-    embeddings = vectorizer.fit_transform(texts).toarray()
+    
+    if response.status_code != 200:
+        raise Exception(f"OpenAI API error: {response.text}")
+    
+    data = response.json()
+    embeddings = np.array([item["embedding"] for item in data["data"]])
     return embeddings
