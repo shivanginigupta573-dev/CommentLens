@@ -28,3 +28,5 @@ urllib3==2.1.0
 pynndescent==0.5.11
 numba==0.58.1
 llvmlite==0.41.1
+sentence-transformers==3.0.1
+onnxruntime==1.19.2
