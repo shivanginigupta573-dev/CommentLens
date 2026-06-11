@@ -1,8 +1,10 @@
-.env
-venv/
+ml_cache/
+numba_cache/
 __pycache__/
-db.sqlite3
-*.sqlite3
-postman/
-.postman/
 *.pyc
+*.nbc
+*.nbi
+db.sqlite3
+.env
+build.sh
+warmup.py

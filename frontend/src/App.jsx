@@ -85,7 +85,7 @@ export default function App() {
         setLoading(false)
       }, 400)
     } catch (err) {
-      setError(err.response?.data?.error || 'Something went wrong. Try again.')
+     setError(err.response?.data?.error || 'Backend requires local setup. See README for instructions.')
       setLoading(false)
     } finally {
       clearInterval(progressInterval)

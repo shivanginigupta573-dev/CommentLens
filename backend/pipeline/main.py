@@ -1,8 +1,11 @@
 import os
+from pathlib import Path
 from dotenv import load_dotenv
 from googleapiclient.discovery import build
 
-load_dotenv()
+# explicitly load .env from backend/ folder regardless of where script runs from
+load_dotenv(Path(__file__).resolve().parent.parent / '.env')
+
 API_KEY = os.getenv("YOUTUBE_API_KEY")
 
 if not API_KEY:
