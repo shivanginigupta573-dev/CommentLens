@@ -85,7 +85,7 @@ export default function App() {
         setLoading(false)
       }, 400)
     } catch (err) {
-     setError(err.response?.data?.error || 'Backend requires local setup. See README for instructions.')
+      setError(err.response?.data?.error || 'Backend requires local setup. See README for instructions.')
       setLoading(false)
     } finally {
       clearInterval(progressInterval)
@@ -213,7 +213,12 @@ export default function App() {
     )
   }
 
-  // ── Screen 3: Results ─────────────────────────────────────
+  // ── Screen 3: Results Calculations ─────────────────────────
+  const totalFetched = results?.total_comments_fetched || 0;
+  const totalCleaned = results?.total_after_cleaning || 0;
+  const spamFiltered = totalFetched - totalCleaned;
+  const spamPercentage = totalFetched > 0 ? Math.round((spamFiltered / totalFetched) * 100) : 0;
+
   return (
     <div className="page">
       <div className="results-header">
@@ -232,29 +237,41 @@ export default function App() {
           <h2 className="video-title">{results.video_title}</h2>
         </div>
 
-        <div className="metrics-row">
+        {/* IMPROVEMENT #4: Balanced 4-Card Performance Dashboard Layout */}
+        <div className="metrics-row" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: '16px' }}>
           <div className="metric-card">
             <div className="metric-icon">💬</div>
             <div>
-              <p className="metric-num">{results.total_comments_fetched}</p>
+              <p className="metric-num">{totalFetched}</p>
               <p className="metric-label">Total Comments</p>
               <p className="metric-sub">100% analysed</p>
             </div>
           </div>
+          
+          <div className="metric-card">
+            <div className="metric-icon">🛡️</div>
+            <div>
+              <p className="metric-num">{spamFiltered}</p>
+              <p className="metric-label">Spam Shielded</p>
+              <p className="metric-sub">{spamPercentage}% noise filtered</p>
+            </div>
+          </div>
+
+          <div className="metric-card">
+            <div className="metric-icon">✨</div>
+            <div>
+              <p className="metric-num">{totalCleaned}</p>
+              <p className="metric-label">Signal Comments</p>
+              <p className="metric-sub">Pure intent subset</p>
+            </div>
+          </div>
+
           <div className="metric-card">
             <div className="metric-icon">🔍</div>
             <div>
               <p className="metric-num">{results.clusters.length}</p>
               <p className="metric-label">Topics Found</p>
-              <p className="metric-sub">Top signals shown</p>
-            </div>
-          </div>
-          <div className="metric-card">
-            <div className="metric-icon">✨</div>
-            <div>
-              <p className="metric-num">{results.total_after_cleaning}</p>
-              <p className="metric-label">Signal Comments</p>
-              <p className="metric-sub">After noise removal</p>
+              <p className="metric-sub">Ranked by impact</p>
             </div>
           </div>
         </div>
@@ -286,13 +303,11 @@ export default function App() {
 
                     <div className="cluster-main">
                       <div className="cluster-title-row">
+                        {/* IMPROVEMENT #3: Render Unique Backend Keyword Topics Directly */}
                         <h4 className="cluster-title">
-                          {cluster.top_comments && cluster.top_comments[0]
-                            ? cluster.top_comments[0]
-                                .split(' ').slice(0, 8).join(' ')
-                                .replace(/[^a-zA-Z0-9\s]/g, '').trim() + '...'
-                            : `Topic Signal #${idx + 1}`}
+                          {cluster.title || `Topic Signal #${idx + 1}`}
                         </h4>
+                        
                         <span
                           className="percent-badge"
                           style={{ background: color.badge, color: color.badgeText }}
@@ -335,7 +350,7 @@ export default function App() {
           </div>
         </div>
 
-        <p className="footer">
+      <p className="footer">
           CommentLens · Built with love.
         </p>
       </div>

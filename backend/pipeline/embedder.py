@@ -9,5 +9,6 @@ def get_model():
     return _model
 
 def get_embeddings(cleaned_comments):
-    texts = [c["text"] for c in cleaned_comments]
+    # CRITICAL: Extract the pure semantic text fingerprint, not the raw text block
+    texts = [c["search_text"] for c in cleaned_comments]
     return get_model().encode(texts)
